@@ -1,0 +1,5 @@
+@import '@tabler/core/dist/css/tabler.min.css';
+
+body {
+    min-width: 320px;
+}
