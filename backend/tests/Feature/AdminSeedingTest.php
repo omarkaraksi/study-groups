@@ -97,6 +97,6 @@ class AdminSeedingTest extends TestCase
         $this->assertEquals(1, User::where('email', 'moderator@example.com')->count());
         $this->assertEquals(1, Role::where('slug', 'admin')->count());
         $this->assertEquals(1, Role::where('slug', 'moderator')->count());
-        $this->assertEquals(5, Permission::count());
+        $this->assertEquals(8, Permission::count());
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\StudyGroupAdminController;
+use App\Http\Controllers\Admin\UserAdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -23,4 +24,10 @@ Route::middleware('admin.auth')->group(function () {
     Route::get('/admin/study-groups/{study_group}/edit', [StudyGroupAdminController::class, 'edit'])->name('admin.study-groups.edit');
     Route::patch('/admin/study-groups/{study_group}', [StudyGroupAdminController::class, 'update'])->name('admin.study-groups.update');
     Route::delete('/admin/study-groups/{study_group}', [StudyGroupAdminController::class, 'destroy'])->name('admin.study-groups.destroy');
+
+    Route::get('/admin/users', [UserAdminController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/{user}', [UserAdminController::class, 'show'])->name('admin.users.show');
+    Route::get('/admin/users/{user}/edit', [UserAdminController::class, 'edit'])->name('admin.users.edit');
+    Route::patch('/admin/users/{user}', [UserAdminController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [UserAdminController::class, 'destroy'])->name('admin.users.destroy');
 });

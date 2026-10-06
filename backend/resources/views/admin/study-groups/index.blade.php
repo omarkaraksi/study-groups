@@ -30,7 +30,9 @@
                 @endforeach
             </tbody>
         </table>
-        {{ $groups->links() }}
+        <div class="mt-3 text-center">
+            {{ $groups->links('pagination::custom') }}
+        </div>
     </div>
 </div>
 @endsection

@@ -12,7 +12,7 @@ class StudyGroupAdminController extends Controller
     {
         $groups = StudyGroup::with(['owner', 'category', 'academicLevel'])
             ->latest()
-            ->paginate(15);
+            ->paginate(5);
 
         return view('admin.study-groups.index', compact('groups'));
     }

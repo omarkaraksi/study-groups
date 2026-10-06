@@ -16,6 +16,9 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'Study Groups Create', 'slug' => 'study-groups.create', 'is_active' => true],
             ['name' => 'Study Groups Update', 'slug' => 'study-groups.update', 'is_active' => true],
             ['name' => 'Study Groups Delete', 'slug' => 'study-groups.delete', 'is_active' => true],
+            ['name' => 'Users View', 'slug' => 'users.view', 'is_active' => true],
+            ['name' => 'Users Edit', 'slug' => 'users.edit', 'is_active' => true],
+            ['name' => 'Users Delete', 'slug' => 'users.delete', 'is_active' => true],
         ];
 
         foreach ($permissions as $p) {
@@ -36,7 +39,7 @@ class RolePermissionSeeder extends Seeder
         );
 
         $adminPerms = Permission::whereIn('slug', [
-            'admin.access', 'study-groups.view', 'study-groups.create', 'study-groups.update', 'study-groups.delete',
+            'admin.access', 'study-groups.view', 'study-groups.create', 'study-groups.update', 'study-groups.delete', 'users.view', 'users.edit', 'users.delete',
         ])->get();
 
         $moderatorPerms = Permission::whereIn('slug', [
