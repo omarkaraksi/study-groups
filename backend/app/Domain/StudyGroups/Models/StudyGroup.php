@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[Fillable([
@@ -51,5 +52,46 @@ class StudyGroup extends Model
         return $this->belongsToMany(User::class, 'study_group_members')
             ->withPivot(['role', 'status', 'joined_at'])
             ->withTimestamps();
+    }
+
+    public function translations(): HasMany
+    {
+        return $this->hasMany(StudyGroupTranslation::class);
+    }
+
+    /**
+     * Get the translation for the current app locale, falling back to English.
+     */
+    public function getTranslation(string $locale = null): ?StudyGroupTranslation
+    {
+        $locale = $locale ?: app()->getLocale();
+        
+        // Try the requested locale
+        $translation = $this->translations
+            ->where('locale', $locale)
+            ->first();
+
+        if ($translation) {
+            return $translation;
+        }
+
+        // Fallback to English
+        if ($locale !== 'en') {
+            return $this->translations
+                ->where('locale', 'en')
+                ->first();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get translated field with fallback.
+     */
+    public function getTranslated(string $field, string $locale = null): ?string
+    {
+        $translation = $this->getTranslation($locale);
+        
+        return $translation?->$field ?? null;
     }
 }

@@ -12,15 +12,31 @@ class StudyGroupResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = $request->query('locale', app()->getLocale());
+        $translation = $this->whenLoaded('translations', function () use ($locale) {
+            return $this->getTranslation($locale);
+        });
+
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $translation?->name ?? $this->name,
             'slug' => $this->slug,
-            'description' => $this->description,
+            'description' => $translation?->description ?? $this->description,
             'status' => $this->status,
             'visibility' => $this->visibility,
             'max_members' => $this->max_members,
-            'rules' => $this->rules,
+            'rules' => $translation?->rules ?? $this->rules,
+            'translations' => $this->whenLoaded('translations', function () {
+                return $this->translations
+                    ->map(fn ($t): array => [
+                        'locale' => $t->locale,
+                        'name' => $t->name,
+                        'description' => $t->description,
+                        'rules' => $t->rules,
+                    ])
+                    ->keyBy('locale')
+                    ->all();
+            }),
             'owner' => $this->whenLoaded('owner', fn (): array => [
                 'id' => $this->owner->id,
                 'name' => $this->owner->name,

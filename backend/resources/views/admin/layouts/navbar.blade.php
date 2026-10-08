@@ -9,6 +9,22 @@
         </a>
 
         <div class="navbar-nav flex-row order-md-last">
+            <!-- Language Switcher -->
+            <div class="nav-item dropdown me-3">
+                <a href="#" class="nav-link d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="nav-link-icon me-1">🌐</span>
+                    <span class="d-none d-md-inline">{{ app()->getLocale() === 'ar' ? 'العربية' : 'English' }}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <a href="{{ route('admin.locale.switch', ['locale' => 'en']) }}" class="dropdown-item {{ app()->getLocale() === 'en' ? 'active' : '' }}">
+                        English
+                    </a>
+                    <a href="{{ route('admin.locale.switch', ['locale' => 'ar']) }}" class="dropdown-item {{ app()->getLocale() === 'ar' ? 'active' : '' }}">
+                        العربية
+                    </a>
+                </div>
+            </div>
+            
             <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex align-items-center" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="avatar avatar-sm" style="background-color:#467fcf;">{{ substr(auth()->user()?->name ?? 'A', 0, 1) }}</span>
@@ -26,7 +42,7 @@
         <div class="collapse navbar-collapse" id="admin-navbar">
             <div class="navbar-nav">
                 <a class="nav-link active" href="{{ route('admin.dashboard') }}">
-                    <span class="nav-link-title">Dashboard</span>
+                    <span class="nav-link-title">@lang('admin.dashboard')</span>
                 </a>
             </div>
         </div>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminLoginController;
+use App\Http\Controllers\Admin\LocaleController;
 use App\Http\Controllers\Admin\StudyGroupAdminController;
 use App\Http\Controllers\Admin\UserAdminController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,9 @@ Route::get('/', function () {
 
 Route::get('/admin/login', [AdminLoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('/admin/login', [AdminLoginController::class, 'login']);
+
+// Locale switcher - accessible to both guests and authenticated users
+Route::get('/admin/locale/{locale}', [LocaleController::class, 'switch'])->name('admin.locale.switch');
 
 Route::middleware('admin.auth')->group(function () {
     Route::get('/admin', function () {

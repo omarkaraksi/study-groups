@@ -38,6 +38,7 @@
 - field_of_study nullable
 - city nullable
 - area nullable
+- locale VARCHAR(10) default 'en'
 - timestamps
 - deleted_at
 
@@ -564,5 +565,126 @@ A composite index `(A,B)` supports queries beginning with A and A+B. If real que
 
 Do not add indexes mechanically; every index has storage and write-performance cost.
 
-## 18. Status
+## 18. Localization / Translations
+
+### User Locale Storage
+- Add `locale` column to `user_profiles` table
+- Type: VARCHAR(10) or CHAR(2)
+- Default: `en`
+- Nullable: NO
+- Stores user's preferred language for UI and content
+
+### Translation Tables Pattern
+For each translatable entity, create a separate translation table following this pattern:
+
+#### Generic Structure
+```text
+{entity}_translations
+├── id BIGINT UNSIGNED
+├── {entity}_id BIGINT UNSIGNED (FK to main entity)
+├── locale VARCHAR(10) - e.g., 'en', 'ar'
+├── [translated fields]
+├── timestamps
+└── UNIQUE({entity}_id, locale)
+```
+
+#### Example: study_group_translations
+```text
+study_group_translations
+- id BIGINT UNSIGNED PK
+- study_group_id BIGINT UNSIGNED FK study_groups
+- locale VARCHAR(10) NOT NULL
+- name VARCHAR(255)
+- description TEXT nullable
+- rules TEXT nullable
+- timestamps
+- UNIQUE(study_group_id, locale)
+- INDEX(study_group_id)
+- INDEX(locale)
+```
+
+#### Entities Requiring Translation Tables
+
+1. **study_groups**
+   ```text
+   study_group_translations
+   - id
+   - study_group_id FK study_groups
+   - locale
+   - name
+   - description nullable
+   - rules nullable
+   - UNIQUE(study_group_id, locale)
+   ```
+
+2. **courses**
+   ```text
+   course_translations
+   - id
+   - course_id FK courses
+   - locale
+   - title
+   - description nullable
+   - UNIQUE(course_id, locale)
+   ```
+
+3. **books**
+   ```text
+   book_translations
+   - id
+   - book_id FK books
+   - locale
+   - title
+   - description nullable
+   - UNIQUE(book_id, locale)
+   ```
+
+4. **learning_materials**
+   ```text
+   learning_material_translations
+   - id
+   - learning_material_id FK learning_materials
+   - locale
+   - title
+   - description nullable
+   - UNIQUE(learning_material_id, locale)
+   ```
+
+5. **categories**
+   ```text
+   category_translations
+   - id
+   - category_id FK categories
+   - locale
+   - name
+   - description nullable
+   - UNIQUE(category_id, locale)
+   ```
+
+6. **subjects**
+   ```text
+   subject_translations
+   - id
+   - subject_id FK subjects
+   - locale
+   - name
+   - description nullable
+   - UNIQUE(subject_id, locale)
+   ```
+
+### Fallback Strategy
+- Application queries should attempt to retrieve translation for requested locale
+- If not found, fallback to English (`en`) translation
+- Join queries should use LEFT JOIN with COALESCE or application-level fallback
+- Database does NOT enforce fallback - application handles it
+
+### Implementation Notes
+- Main entity tables remain unchanged (contain only language-independent fields)
+- Translated fields are moved from main tables to translation tables
+- Existing data: English content becomes the `en` translation
+- Migration strategy: Create translation tables, migrate existing content to `en` rows
+- Do NOT store multiple languages in one column
+- UNIQUE constraint prevents duplicate translations for same entity and locale
+
+## 19. Status
 Database Architecture v1.0 is ready to translate into Laravel migrations, with normal review during implementation.

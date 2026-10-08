@@ -30,5 +30,10 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('access-admin', function (User $user) {
             return $user->hasPermission('admin.access');
         });
+
+        // RTL/LTR Blade directive
+        \Blade::directive('direction', function () {
+            return "<?php echo app()->getLocale() === 'ar' ? 'rtl' : 'ltr'; ?>";
+        });
     }
 }

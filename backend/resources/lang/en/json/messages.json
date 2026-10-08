@@ -1,0 +1,13 @@
+{
+    "success": "Operation completed successfully.",
+    "created": "Resource created successfully.",
+    "updated": "Resource updated successfully.",
+    "deleted": "Resource deleted successfully.",
+    "not_found": "Resource not found.",
+    "unauthorized": "Unauthorized action.",
+    "forbidden": "Forbidden.",
+    "validation_error": "Validation error.",
+    "server_error": "Server error. Please try again later.",
+    "invalid_locale": "Invalid locale.",
+    "locale_set": "Locale set successfully."
+}

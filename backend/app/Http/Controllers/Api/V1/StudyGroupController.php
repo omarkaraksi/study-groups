@@ -45,7 +45,7 @@ class StudyGroupController extends Controller
         ShowStudyGroupRequest $request,
         StudyGroup $study_group
     ): JsonResponse {
-        return (new StudyGroupResource($study_group->load(['owner', 'category', 'academicLevel', 'subjects', 'members'])))
+        return (new StudyGroupResource($study_group->load(['owner', 'category', 'academicLevel', 'subjects', 'members', 'translations'])))
             ->response()
             ->setStatusCode(200);
     }

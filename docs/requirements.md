@@ -244,13 +244,95 @@ Admin manages:
 
 Admin UI: Laravel Blade + Tabler.
 
-## 17. API
+## 17. Localization / Multilingual
+
+The project has two independent localization systems with clear architectural separation.
+
+### Supported Languages
+- English (`en`) - default and fallback locale
+- Arabic (`ar`)
+
+Architecture must allow adding future languages without redesign.
+
+### User Locale
+Users have a preferred locale stored in `user_profiles.locale` (since `user_profiles` is the established location for user preferences).
+
+### Locale Resolution Priority
+1. Explicitly requested valid locale (e.g., `?locale=ar` query parameter)
+2. Authenticated user's preferred locale from `user_profiles.locale`
+3. `Accept-Language` HTTP header
+4. Default locale: `en`
+
+Only supported locales may be selected. Query parameter override must be validated and must NOT bypass authorization or security rules.
+
+### Laravel Backend Responsibilities
+- API localization (validation messages, success/error messages)
+- Admin panel localization
+- User locale preference storage and retrieval
+- Database content translations
+- Accept-Language header handling
+- Locale resolution
+
+### React Frontend Responsibilities
+- React UI translations
+- Locale state/context management
+- RTL/LTR handling
+- Date/time/number formatting
+- Frontend UI mirroring for Arabic
+
+**Architectural Independence**: React must NOT depend on Laravel translation files. Laravel must NOT depend on React translation files. The API is the communication boundary.
+
+### UI Translation
+
+**Laravel**: Uses Laravel's normal translation system for Admin UI, validation messages, API messages, and system messages.
+
+**React**: Uses its own independent translation resources for website UI, navigation, buttons, forms, and frontend messages.
+
+### Database Content Translations
+Supported from the beginning using separate translation tables.
+
+**Pattern for Translatable Entities**:
+- Main entity table contains language-independent fields only
+- Translation table contains localized fields (name, title, description, etc.)
+- Translation table structure: parent entity ID, locale, translated fields
+- Uniqueness constraint: `unique(parent_id, locale)`
+
+**Entities to Support**:
+- Study Groups
+- Courses
+- Books
+- Learning Materials
+- Categories
+- Subjects
+- Other genuinely translatable content
+
+Do NOT create translation tables for non-language-dependent fields.
+
+### Translation Fallback
+Requested locale → fallback to English (`en`) if translation does not exist. This behavior is documented and implemented consistently across all entities.
+
+### RTL / LTR
+- Arabic: Right-to-Left (RTL)
+- English: Left-to-Right (LTR)
+
+Laravel Admin UI supports correct direction. React independently manages RTL/LTR based on current locale.
+
+### API Localization
+The API supports localized:
+- Validation errors
+- Success messages
+- Error messages
+- Translatable database content
+
+Consistent locale determination via the resolution priority above. React localization is NOT coupled to Laravel internals.
+
+## 18. API
 REST API version:
 `/api/v1`
 
 Use Laravel API Resources and pagination.
 
-## 18. Security
+## 19. Security
 - Server-side authorization
 - Policies/Gates
 - Input validation
@@ -260,7 +342,7 @@ Use Laravel API Resources and pagination.
 - Transactions for critical workflows
 - Never trust client authorization data
 
-## 19. MVP Out of Scope
+## 20. MVP Out of Scope
 - Private messaging
 - Advanced real-time chat
 - Video conferencing
@@ -274,7 +356,7 @@ Use Laravel API Resources and pagination.
 - Marketplace
 - Advertising
 
-## 20. Development Principle
+## 21. Development Principle
 The project is both a learning project and a portfolio project.
 
 > Simple by default; complexity only when justified by a real requirement.

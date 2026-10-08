@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,6 +8,9 @@
         <title>@yield('title', 'Admin') · {{ config('app.name', 'Laravel') }}</title>
 
         @vite(['resources/css/admin.css', 'resources/js/admin.js'])
+        @if(app()->getLocale() === 'ar')
+            <link href="{{ asset('css/tabler.rtl.min.css') }}" rel="stylesheet">
+        @endif
     </head>
     <body>
         <div class="page">

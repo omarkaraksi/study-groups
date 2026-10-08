@@ -5,17 +5,17 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <h2 class="card-title">Users</h2>
+        <h2 class="card-title">@lang('admin.users')</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Roles</th>
-                    <th>Permissions</th>
-                    <th>Created At</th>
-                    <th>Actions</th>
+                    <th>@lang('admin.id')</th>
+                    <th>@lang('admin.name')</th>
+                    <th>@lang('admin.email')</th>
+                    <th>@lang('admin.roles')</th>
+                    <th>@lang('admin.permissions')</th>
+                    <th>@lang('admin.created_at')</th>
+                    <th>@lang('admin.actions')</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,12 +36,12 @@
                     </td>
                     <td>{{ $user->created_at->format('Y-m-d H:i:s') }}</td>
                     <td>
-                        <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-primary">View</a>
-                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-secondary">Edit</a>
-                        <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                        <a href="{{ route('admin.users.show', $user) }}" class="btn btn-sm btn-primary">@lang('admin.view')</a>
+                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-secondary">@lang('admin.edit')</a>
+                        <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="d-inline" onsubmit="return confirm('@lang('admin.delete_confirmation')')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-sm btn-danger">@lang('admin.delete')</button>
                         </form>
                     </td>
                 </tr>

@@ -4,17 +4,17 @@
             <a class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
                href="{{ route('admin.dashboard') }}">
                 <span class="nav-link-icon me-2">⌂</span>
-                Dashboard
+                @lang('admin.dashboard')
             </a>
             <a class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
                href="{{ route('admin.users.index') }}">
                 <span class="nav-link-icon me-2">👤</span>
-                Users
+                @lang('admin.users')
             </a>
             <a class="list-group-item list-group-item-action d-flex align-items-center {{ request()->routeIs('admin.study-groups.*') ? 'active' : '' }}"
                href="{{ route('admin.study-groups.index') }}">
                 <span class="nav-link-icon me-2">◆</span>
-                Study Groups
+                @lang('admin.study_groups')
             </a>
         </div>
     </div>
